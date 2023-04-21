@@ -2,6 +2,7 @@ from flask import Flask, render_template
 
 # a python library to fetch APIs -- different from request in the flask library
 import requests
+import random
 
 app: Flask = Flask(__name__)
 
@@ -20,7 +21,7 @@ def my_jokes():
     # use the keys "setup" and "punchline" to access the value associated with that key -- this is the informat we want to display!
 
     # Ex: setup=a_joke["setup"]
-    return render_template('joke.html', setup=..., punchline=...)
+    return render_template('joke.html', setup= a_joke[...], punchline=a_joke[...])
 
 
 @app.route("/many-jokes")
@@ -45,7 +46,7 @@ def get_a_joke() -> dict[str, str]:
     # using the requests library's get function to call the API, store data as a variable
     # don't worry about the type, Python will take care of this
 
-    # use request.get() and pass in the API URL variable -- this will fetch a JSON
+    # use requests.get() and pass in the API URL variable -- this will fetch a JSON
     data = ...
 
     # call .json() on the data variable - this will parse the JSON to a dict[str,str]
@@ -64,7 +65,7 @@ def get_10_jokes() -> list[dict[str, str]]:
     # using the requests library's get function to call the API, store data as a variable
     # don't worry about the type, Python will take care of this
 
-    # use request.get() and pass in the API URL variable -- this will fetch a JSON
+    # use requests.get() and pass in the API URL variable -- this will fetch a JSON
     data = ...
 
     # # call .json() on the data variable - this will parse the JSON
@@ -74,37 +75,36 @@ def get_10_jokes() -> list[dict[str, str]]:
     return response
 
 
-@app.route("/api/definition")
-def get_a_def() -> dict[str, str]:
-    # Below lines of code are all from the API documentation: https://developer.oxforddictionaries.com/documentation/getting_started
+@app.route("/api/pictures")
+def get_pictures() -> dict[str, str]:
+    # We'll be using Mars Rover images from NASA: https://api.nasa.gov/index.html
+
     # Follow along with the documentation and create an account to generate a unique app id and key
-    app_id = "<insert your id here>"
-    app_key = "<insert your key here>"
+    app_key = "<insert your app key>"
 
-    language = "en-gb"  # sets language to English
 
-    word_id = "hackathon"  # change this variable to see different word definitions
 
-    url = "https://od-api.oxforddictionaries.com:443/api/v2/entries/" + \
-        language + "/" + word_id.lower()
-    data = requests.get(url, headers={"app_id": app_id, "app_key": app_key})
+    url = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=<INSERT YOUR APP KEY>"
+    data = requests.get(url)
 
     # call .json() on data
-    response = data.json()
+    response = ...
 
     return response
 
 
-@app.route("/definition")
-def my_definitions():
-    # Right now, we are just returning the plain dictionary
+@app.route("/mars")
+def my_pictures():
+    # Right now, we are just returning the image and date of a random index in a JSON full of mars rover images
     # Look at the jokes example we did earlier if you want to experiment with reformatting the data!
-    # Read the Oxford Dictionary API documentation for more information on how to use the API!
+    # Read the NASA Mars Rover Pictures API documentation for more information on how to use the API!
 
-    # Call get_a_def()
-    a_definition: dict[str, str] = ...
+    num = random.randint(1, 3)
+
+    # Call get_pictures()
+    pictures: dict[str, str] = ...
     # the dictionary returned from this API call is a lot more complicated than previous examples we've shown, notice the keys and indicing below
-    return render_template('definition.html', word=a_definition['id'], definition=a_definition['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'][0])
+    return render_template('mars.html', source=pictures['photos'][num]['img_src'], date=pictures['photos'][num]['earth_date'])
 
 
 if __name__ == '__main__':
