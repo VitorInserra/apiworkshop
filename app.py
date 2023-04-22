@@ -79,11 +79,11 @@ def get_pictures() -> dict[str, str]:
     # We'll be using Mars Rover images from NASA: https://api.nasa.gov/index.html
 
     # Follow along with the documentation and create an account to generate a unique app id and key
-    app_key = "lLeOXVNpsKNIUQynvCtxwdhxeDWQwR8VWVZmnN92"
+    app_key = "<APP KEY>"
 
 
 
-    url = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=lLeOXVNpsKNIUQynvCtxwdhxeDWQwR8VWVZmnN92"
+    url = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=<API KEY>"
     data = requests.get(url)
 
     # call .json() on data
